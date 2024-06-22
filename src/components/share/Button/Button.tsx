@@ -1,12 +1,13 @@
 import classNames from "classnames";
 import React, { MouseEventHandler } from "react";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: React.ReactNode;
   icon?: React.ReactNode;
   disabled?: boolean;
   className?: string;
   size?: "sm" | "md" | "lg";
+  variant?: "primary" | "default";
   onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -18,6 +19,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled = false,
       size = "md",
       className,
+      variant,
       ...rest
     } = props;
 
@@ -34,14 +36,26 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       }
     };
 
+    const btnColor = () => {
+      switch (variant) {
+        case "primary":
+          return "bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
+        case "default":
+          return "bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50";
+        default:
+          return "bg-indigo-600 text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600";
+      }
+    };
+
     const classes = classNames(
       "rounded shadow-sm",
-      {
-        "text-gray-900 bg-white hover:bg-indigo-100 border": !disabled,
-        "text-gray-700 bg-gray-200 cursor-not-allowed": disabled,
-      },
+
       getBtnSize(size),
-      className
+      btnColor(),
+      className,
+      {
+        "text-gray-700 bg-gray-200 opacity-50 cursor-not-allowed": disabled,
+      }
     );
 
     const handleClick = (
