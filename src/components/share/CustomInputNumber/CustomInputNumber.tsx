@@ -1,4 +1,10 @@
-import React, { FocusEvent, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FocusEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Button from "../Button";
 import { NumberFormatBase } from "react-number-format";
 import classNames from "classnames";
@@ -37,6 +43,8 @@ const CustomInputNumber = (props: CustomInputNumberProps) => {
 
   useEffect(() => {
     triggerInputEventChange();
+    onChange && onChange({ target: { name, value: inputValue } });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputValue]);
 
   const triggerInputEventChange = () => {
@@ -58,23 +66,26 @@ const CustomInputNumber = (props: CustomInputNumberProps) => {
     });
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    let newValue = Number(event.target.value);
+
     if (disabled) return;
-
-    const newValue = parseFloat(event.target.value);
-    if (isNaN(newValue)) return;
-    onChange && onChange({ target: { name, value: newValue } });
-
+    console.log("!!");
+    if (isNaN(newValue)) {
+      newValue = min;
+    }
     setInputValue(newValue);
   };
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    let newValue = Number(event.target.value);
     if (disabled) return;
-
-    const newValue = parseFloat(event.target.value);
+    if (isNaN(newValue)) {
+      newValue = min;
+    }
     const clampedValue = Math.min(Math.max(newValue, min), max);
-    setInputValue(clampedValue);
 
+    setInputValue(clampedValue);
     onBlur && onBlur(event);
   };
 
@@ -97,6 +108,7 @@ const CustomInputNumber = (props: CustomInputNumberProps) => {
   return (
     <div className="mt-2 flex gap-2">
       <Button
+        type="button"
         icon={"-"}
         className="w-12 h-12"
         disabled={disabled || inputValue <= min}
@@ -106,18 +118,19 @@ const CustomInputNumber = (props: CustomInputNumberProps) => {
       />
       <NumberFormatBase
         getInputRef={inputRef}
-        name={name}
         className={classNames("text-center border rounded w-12 h-12", {
           "cursor-not-allowed bg-gray-100 text-gray-500 ring-gray-200":
             disabled,
         })}
-        value={inputValue}
-        onChange={handleChange}
-        onInput={onInput}
-        onBlur={handleBlur}
         disabled={disabled}
+        value={inputValue}
+        placeholder={min.toString()}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onInput={onInput}
       />
       <Button
+        type="button"
         icon={"+"}
         className="w-12 h-12"
         disabled={disabled || inputValue >= max}
