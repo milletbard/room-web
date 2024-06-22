@@ -1,16 +1,32 @@
+## Introduction
+
+```
+# 測試資料說明
+guestOptions: [guestA, guestB, guestC] 代表有三種房客組合
+roomsOptions: [roomsA, roomsB, roomsC] 代表有三種房間組合
+
+1. 使用 useSearchParams 取得 URL query string
+2. 使用 guestOptions, roomsOptions 找到對應的 guest, room
+3. 將找到的 guest, room 傳入 LocationSelector, RoomAllocation
+4. 在 RoomAllocation 內部的 onChange 可以得到使用者選擇的結果
+
+# 用法說明
+透過在網址上加上 guestType (A, B, C), roomsType (A, B, C) 可以切換不同的房客組合, 房間組合
+舉例: http://localhost:3000/search/%5Bcity%5D?guestType=A&roomsType=A
+```
+
 ## Tech Stack
 
-Framework: Next.js
-CSS Framework: Tailwind CSS
-Language: TypeScript
-Other: react-hook-form, react-number-format, react-select, usehooks-ts
-
+- Framework: Next.js
+- CSS Framework: Tailwind CSS
+- Language: TypeScript
+- Other: react-hook-form, react-number-format, react-select, usehooks-ts
 
 ## Preview
 
-<img width="699" alt="截圖 2024-06-23 03 58 11" src="https://github.com/milletbard/room-web/assets/25094959/161ff9bb-ef47-44b8-850a-07073c56157f">
+<img width="500" alt="截圖 2024-06-23 03 58 11" src="https://github.com/milletbard/room-web/assets/25094959/161ff9bb-ef47-44b8-850a-07073c56157f">
 
-<img width="751" alt="截圖 2024-06-23 03 58 23" src="https://github.com/milletbard/room-web/assets/25094959/897853cf-7711-4b12-b943-2ba769d121e3">
+<img width="500" alt="截圖 2024-06-23 03 58 23" src="https://github.com/milletbard/room-web/assets/25094959/897853cf-7711-4b12-b943-2ba769d121e3">
 
 
 ---
