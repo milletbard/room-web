@@ -1,3 +1,20 @@
+## Tech Stack
+
+Framework: Next.js
+CSS Framework: Tailwind CSS
+Language: TypeScript
+Other: react-hook-form, react-number-format, react-select, usehooks-ts
+
+
+## Preview
+
+<img width="699" alt="截圖 2024-06-23 03 58 11" src="https://github.com/milletbard/room-web/assets/25094959/161ff9bb-ef47-44b8-850a-07073c56157f">
+
+<img width="751" alt="截圖 2024-06-23 03 58 23" src="https://github.com/milletbard/room-web/assets/25094959/897853cf-7711-4b12-b943-2ba769d121e3">
+
+
+---
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
