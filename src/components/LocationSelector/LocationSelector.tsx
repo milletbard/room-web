@@ -8,19 +8,26 @@ import dayjs from "dayjs";
 import { MagnifyingGlassIcon } from "@heroicons/react/16/solid";
 import { useBoolean } from "usehooks-ts";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { secretDomain, cityData, weekMap } from "@/constants";
+import { SECRET_DOMAIN, CITY_DATA, WEEK_MAP } from "@/constants";
 import { decrypt } from "@/utils/crypto";
+import { Guest } from "@/type";
 
-const LocationSelect = () => {
+const gogoTravelDomain = decrypt(
+  SECRET_DOMAIN,
+  process.env.NEXT_PUBLIC_ID || ""
+);
+
+interface LocationSelectorProps {
+  guest: Guest;
+}
+
+const LocationSelector = ({ guest }: LocationSelectorProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { city } = useParams();
+
   const checkInDate = searchParams.get("check_in_date");
   const checkOutDate = searchParams.get("check_out_date");
-  const gogoTravelDomain = decrypt(
-    secretDomain,
-    process.env.NEXT_PUBLIC_ID || ""
-  );
 
   const { value: modalOpenValue, setValue: setModalOpenValue } =
     useBoolean(false);
@@ -28,19 +35,19 @@ const LocationSelect = () => {
   const startDateText =
     checkInDate &&
     `${dayjs(checkInDate).format("YYYY/MM/DD")}(${
-      weekMap[dayjs(checkInDate).day()]
+      WEEK_MAP[dayjs(checkInDate).day()]
     })`;
 
   const endDateText =
     checkOutDate &&
     `${dayjs(checkOutDate).format("YYYY/MM/DD")}(${
-      weekMap[dayjs(checkOutDate).day()]
+      WEEK_MAP[dayjs(checkOutDate).day()]
     })`;
 
   const stayingDay =
     checkOutDate && dayjs(checkOutDate).diff(dayjs(checkInDate), "day");
 
-  const selectedCity = cityData.find((option) => option.value === city);
+  const selectedCity = CITY_DATA.find((option) => option.value === city);
 
   const canSearch =
     !!selectedCity &&
@@ -61,8 +68,15 @@ const LocationSelect = () => {
   };
 
   const handleSearch = () => {
+    // number to array
+    const childAges = Array.from({ length: guest.child }, (_, i) => i + 1);
+
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set("adult", String(guest.adult));
+    newSearchParams.set("childAges", childAges.join(","));
+
     window.open(
-      `${gogoTravelDomain}/list/tw/${city}` + "?" + searchParams.toString(),
+      `${gogoTravelDomain}/list/tw/${city}` + "?" + newSearchParams.toString(),
       "_blank"
     );
   };
@@ -71,22 +85,24 @@ const LocationSelect = () => {
     <div className="flex -space-x-px">
       <DateRangePickerModal open={modalOpenValue} setOpen={setModalOpenValue} />
 
-      <div className="w-1/2 min-w-0 flex-1" suppressHydrationWarning>
+      <div className="min-w-0 flex-1">
         <ReactSelect
           styles={{
             control: (provided) => ({
               ...provided,
               boxShadow: "none",
               borderColor: "#D1D5DB",
-              borderBottomRightRadius: 0,
-              borderTopRightRadius: 0,
               "&:hover": {
                 borderColor: "#D1D5DB",
               },
+              borderBottomRightRadius: 0,
+              borderTopRightRadius: 0,
+              borderTopLeftRadius: 6,
+              borderBottomLeftRadius: 6,
             }),
           }}
           instanceId="city-select"
-          options={cityData}
+          options={CITY_DATA}
           placeholder="城市"
           value={selectedCity}
           onChange={(option) => {
@@ -109,7 +125,7 @@ const LocationSelect = () => {
         onClick={handleSearch}
         disabled={!canSearch}
         type="button"
-        className="relative -ml-px inline-flex items-center gap-x-1.5  rounded-r-md rounded-l-none px-3 py-2.5 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        className="relative -ml-px inline-flex items-center gap-x-1.5  rounded-r-md rounded-l-none px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
         icon={
           <MagnifyingGlassIcon
             className="-ml-0.5 h-5 w-5 text-white"
@@ -121,4 +137,4 @@ const LocationSelect = () => {
   );
 };
 
-export default LocationSelect;
+export default LocationSelector;
