@@ -49,7 +49,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const classes = classNames(
       "rounded shadow-sm",
-
       getBtnSize(size),
       btnColor(),
       className,
@@ -67,6 +66,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         return;
       }
       onClick?.(e);
+    };
+
+    const handleMouseDown = (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+      const { onMouseDown } = props;
+      if (disabled) {
+        e.preventDefault();
+        return;
+      }
+      onMouseDown?.(e);
     };
 
     const renderChildren = () => {
@@ -87,7 +97,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     return (
-      <button ref={ref} className={classes} {...rest} onClick={handleClick}>
+      <button
+        ref={ref}
+        className={classes}
+        {...rest}
+        onClick={handleClick}
+        onMouseDown={handleMouseDown}
+      >
         {renderChildren()}
       </button>
     );

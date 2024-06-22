@@ -70,7 +70,7 @@ const CustomInputNumber = (props: CustomInputNumberProps) => {
     let newValue = Number(event.target.value);
 
     if (disabled) return;
-    console.log("!!");
+
     if (isNaN(newValue)) {
       newValue = min;
     }
