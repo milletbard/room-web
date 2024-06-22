@@ -1,7 +1,7 @@
-export const secretDomain =
+export const SECRET_DOMAIN =
   "U2FsdGVkX1/Gm17hQ2Hq+860NvHMwnpMsR3FI6zcz0Lzvlb2jTBZmvzLhuaKxkGX";
 
-export const weekMap = {
+export const WEEK_MAP = {
   0: "日",
   1: "一",
   2: "二",
@@ -11,7 +11,7 @@ export const weekMap = {
   6: "六",
 };
 
-export const cityData = [
+export const CITY_DATA = [
   { value: "taipei-city", label: "臺北市" },
   { value: "new-taipei-city", label: "新北市" },
   { value: "taoyuan-city", label: "桃園市" },

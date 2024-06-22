@@ -18,9 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col container mx-auto  justify-center items-center min-h-[100vh] min-w-[100vw] gap-4">
+        <div className="flex flex-col container mx-auto  justify-center items-center min-h-[100vh] min-w-[100vw] gap-4 pt-10">
           {children}
         </div>
       </body>

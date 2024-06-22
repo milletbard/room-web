@@ -6,11 +6,11 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { DateRange, Range, RangeKeyDict } from "react-date-range";
+import { DateRange, Range } from "react-date-range";
 import dayjs from "dayjs";
 import Button from "../share/Button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { weekMap } from "@/constants";
+import { WEEK_MAP } from "@/constants";
 
 interface DateRangePickerModalProps {
   open: boolean;
@@ -32,11 +32,11 @@ const DateRangePickerModal = (props: DateRangePickerModalProps) => {
   });
 
   const startDateText = `${dayjs(dateRange.startDate).format("YYYY/MM/DD")}(${
-    weekMap[dayjs(dateRange.startDate).day()]
+    WEEK_MAP[dayjs(dateRange.startDate).day()]
   })`;
 
   const endDateText = `${dayjs(dateRange.endDate).format("YYYY/MM/DD")}(${
-    weekMap[dayjs(dateRange.endDate).day()]
+    WEEK_MAP[dayjs(dateRange.endDate).day()]
   })`;
 
   const stayingDay = dayjs(dateRange.endDate).diff(
@@ -45,11 +45,17 @@ const DateRangePickerModal = (props: DateRangePickerModalProps) => {
   );
 
   const handleSubmit = () => {
-    router.push(
-      `${pathname}?check_in_date=${dayjs(dateRange.startDate).format(
-        "YYYY-MM-DD"
-      )}&check_out_date=${dayjs(dateRange.endDate).format("YYYY-MM-DD")}`
+    const searchQuery = new URLSearchParams(searchParams);
+    searchQuery.set(
+      "check_in_date",
+      dayjs(dateRange.startDate).format("YYYY-MM-DD")
     );
+    searchQuery.set(
+      "check_out_date",
+      dayjs(dateRange.endDate).format("YYYY-MM-DD")
+    );
+    const url = `${pathname}?${searchQuery.toString()}`;
+    router.push(url);
 
     setOpen(false);
   };
@@ -111,7 +117,7 @@ const DateRangePickerModal = (props: DateRangePickerModalProps) => {
                     onClick={handleSubmit}
                     className="w-full"
                   >
-                    搜尋
+                    確認
                   </Button>
                 </div>
               </DialogPanel>
